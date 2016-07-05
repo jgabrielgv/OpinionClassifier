@@ -19,7 +19,7 @@ def load_documents():
         text = trainning_file[0][index].split(',')[2].strip().lower()
         classification = trainning_file[0][index].split(',')[1].strip()
         documents.append((text.split(' '), get_classification(classification)))
-
+        
 documents = []
 
 print("Creating documents")
@@ -27,7 +27,7 @@ load_documents()
 #documents = open_pickled_file("documents.pickle")
 
 print("Creating pickled documents")
-pickle_file("pickled_algos/documents.pickle", documents)
+pickle_file("Pickles/documents.pickle", documents)
 
 encode = 'latin1'
 
@@ -51,12 +51,12 @@ print("Defining frequences")
 all_words = nltk.FreqDist(all_words)
 
 print("Creating pickled words")
-pickle_file("pickled_algos/all_words.pickle", all_words)
+pickle_file("Pickles/all_words.pickle", all_words)
 
 word_features = list(all_words.keys())[:5000]
 
 print("Creating pickled word_features")
-pickle_file("pickled_algos/word_features.pickle", word_features)
+pickle_file("Pickles/word_features.pickle", word_features)
 
 #featuresets = [(find_features(rev), category) for (rev, category) in documents[0]]
 def find_features(document):
@@ -78,26 +78,24 @@ add_features()
 #featuresets = open_pickled_file("featuresets5k.pickle")
 
 print("Creating pickled featuresets5k")
-pickle_file("pickled_algos/featuresets5k.pickle", featuresets)
+pickle_file("Pickles/featuresets5k.pickle", featuresets)
 
 amount = len(documents)/10
 training_len = amount*9
 print("Training len", int(training_len))
 
 # set that we'll train our classifier with
-training_set = featuresets[:training_len]
+#training_set = featuresets[:training_len]
+training_set = featuresets[:]
 
 # set that we'll test against.
 testing_set = featuresets[training_len:]
-
-#print("Features")
-#print(find_features(["gusta", ":-))"]))
 
 print("Training model with NaiveBayes")
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 print("Creating pickled NaiveBayes classifier")
-pickle_file("pickled_algos/originalnaivebayes5k.pickle", classifier)
+pickle_file("Pickles/originalnaivebayes5k.pickle", classifier)
 
 print("Classifier accuracy percent:",(nltk.classify.accuracy(classifier, testing_set))*100)
 

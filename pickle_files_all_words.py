@@ -25,7 +25,7 @@ load_documents()
 documents = open_pickled_file("documents.pickle")
 
 print("Creating pickled documents")
-pickle_file("pickled_algos/documents.pickle", documents)
+pickle_file("Pickle/documents.pickle", documents)
 
 encode = 'latin1'
 
@@ -49,13 +49,13 @@ print("Defining frequences")
 all_words = nltk.FreqDist(all_words)
 
 print("Creating pickled words")
-pickle_file("pickled_algos/all_words_all.pickle", all_words)
+pickle_file("Pickle/all_words_all.pickle", all_words)
 
 word_features = list(all_words.keys())
 #word_features = open_pickled_file("word_features_all.pickle")
 
 print("Creating pickled word_features")
-pickle_file("pickled_algos/word_features_all.pickle", word_features)
+pickle_file("Pickle/word_features_all.pickle", word_features)
 
 #featuresets = [(find_features(rev), category) for (rev, category) in documents[0]]
 def find_features(document):
@@ -77,7 +77,7 @@ add_features()
 #featuresets = open_pickled_file("featuresets_all.pickle")
 
 print("Creating pickled featuresets_all")
-pickle_file("pickled_algos/featuresets_all.pickle", featuresets)
+pickle_file("Pickle/featuresets_all.pickle", featuresets)
 
 amount = len(documents)/10
 training_len = amount*9
@@ -94,7 +94,7 @@ classifier = nltk.NaiveBayesClassifier.train(featuresets)
 #classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 print("Creating pickled NaiveBayes classifier")
-pickle_file("pickled_algos/originalnaivebayes_all.pickle", classifier)
+pickle_file("Pickle/originalnaivebayes_all.pickle", classifier)
 
 print("Classifier accuracy percent:",(nltk.classify.accuracy(classifier, testing_set))*100)
 
