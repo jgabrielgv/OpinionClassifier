@@ -5,17 +5,11 @@ import pickle
 import random
 from nltk.corpus import stopwords
 import pandas as pd
+from utility import get_document, pickle_file, open_pickled_file, show_most_informative_features
 
 encode = 'latin1'
  
 #sys.setdefaultencoding('latin1')
-
-def open_pickled_file(file_name):
-    open_file = open("pickled_algos/%s" % (file_name), "rb")
-    item = pickle.load(open_file)
-    open_file.close()
-
-    return item
 
 print("Loading documents")
 documents = open_pickled_file("documents.pickle")
@@ -61,35 +55,15 @@ classifier = open_pickled_file("originalnaivebayes5k.pickle")
 
 #print("Classifier accuracy percent:",(nltk.classify.accuracy(classifier, testing_set))*100)
 
-def show_most_informative_features(classifier, n=10):
-        # Determine the most relevant features, and display them.
-        cpdist = classifier._feature_probdist
-        print('Most Informative Features')
-
-        for (fname, fval) in classifier.most_informative_features(n):
-            def labelprob(l):
-                return cpdist[l, fname].prob(fval)
-
-            labels = sorted([l for l in classifier._labels
-                             if fval in cpdist[l, fname].samples()],
-                            key=labelprob)
-            if len(labels) == 1:
-                continue
-            l0 = labels[0]
-            l1 = labels[-1]
-            if cpdist[l0, fname].prob(fval) == 0:
-                ratio = 'INF'
-            else:
-                ratio = '%8.1f' % (cpdist[l1, fname].prob(fval) /
-                                   cpdist[l0, fname].prob(fval))
-            print(('%24s = %-14r %6s : %-6s = %s : 1.0' %
-                   (fname.decode(encode), fval, ("%s" % l1.decode(encode))[:6].decode(encode), ("%s" % l0.decode(encode))[:6].decode(encode), ratio.decode(encode))))
-
 print("Print informative features")
 show_most_informative_features(classifier, 50)
 
 #print("End of the process")
 
+def sentiment_file(file_path):
+    #df.to_csv(file_name, sep='\t', encoding='utf-8')
+    print("Test")
+    
 def sentiment(text):
     feats = find_features(text)
     return classifier.classify(feats)#,(nltk.classify.accuracy(classifier, set(text)))*100
